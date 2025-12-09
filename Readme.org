@@ -1,0 +1,28 @@
+#+Title: Cuda learning Readme file
+#+Author: Zhengnan Ma
+#+Description: Cuda and FPGA AI learning introduction
+#+Startup: showeverything
+#+Options: toc:2
+
+* Learning Path
+
+I'm not only learning *Cuda* but also *FPGA* AI reasoning acceleration.
+Hardware platform:
++ Cuda: RTX4060
++ FPGA: Xilinx Kria KV260 EVK
+
+I setup — NVIDIA 4060 + Xilinx Kria KV260 is a powerful combination that enables true heterogeneous acceleration:
++ GPU: CUDA + TensorRT + PyTorch acceleration
++ FPGA: Vitis + DPU (Xilinx Deep Learning Processing Unit)
++ This truly delivers GPU + FPGA heterogeneous acceleration.
+  
+Summary learning path:
++ Mathematics and C/C++ Basics
++ Cuda fundamentals
++ GPU deep learning acceleration
++ FPGA essentials
++ FPGA AI acceleration(DPU/Vitis AI)
++ GPU + FPGA project integration
++ Advanced Heterogeneous Systems
+
+** Cuda Learning
