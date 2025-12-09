@@ -25,4 +25,202 @@ Summary learning path:
 + GPU + FPGA project integration
 + Advanced Heterogeneous Systems
 
-** Cuda Learning
+** Overall Plan Overview
+| Phase | Core Focus                                | Duration   | Key Deliverables                                                          |
+|-------+-------------------------------------------+------------+---------------------------------------------------------------------------|
+|     1 | Math & C/C++ Fundamentals                 | 2–4 weeks  | CPU-based matrix multiplication program                                   |
+|     2 | CUDA Introduction (RTX 4060)              | 4–6 weeks  | 3 CUDA-accelerated projects                                               |
+|     3 | GPU Deep Learning Acceleration (TensorRT) | 4–8 weeks  | End-to-end PyTorch → ONNX → TensorRT inference pipeline with benchmarking |
+|     4 | FPGA Fundamentals (KV260)                 | 4–8 weeks  | Two basic FPGA projects (e.g., LED control, FFT/FIR filter)               |
+|     5 | FPGA AI Acceleration (DPU / Vitis AI)     | 6–10 weeks | Full AI deployment on FPGA with performance comparison against GPU        |
+|     6 | GPU + FPGA Heterogeneous Integration      | 2–3 months | Capstone project demonstrating co-acceleration                            |
+|     7 | Advanced: Heterogeneous Systems           | Open-ended | Research-ready output (e.g., benchmarking platform, paper-style report)   |
+
+** Detailed Phase Breakdown
+Heterogeneous Acceleration Learning Roadmap: 6-Month Weekly Plan.
+The learning documentations and videos for each section need to be reorganized and updated.
+
+| Month                                    | Week            | Phase Theme                           | Learning Objectives                                                                  | Key Content & Resources                                                                                                                                                             |
+|------------------------------------------+-----------------+---------------------------------------+--------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Month 1**<br>Foundation                | **Week 1**      | C++ Basics                            | Master syntax, pointers, references, functions, classes                              |  *C++ Primer (5th Edition)*<br> Bilibili: “Heima C++ Full Course” (beginner-friendly)<br> CPPReference (essential documentation)                                              |
+|                                          | **Week 2**      | C++ Advanced                          | Understand templates, STL, multithreading; be able to read CUDA sample code          |  Bilibili: “Hou Jie C++ Object-Oriented Programming”<br> STL documentation: cppreference.com                                                                                    |
+|                                          | **Week 3**      | Math Fundamentals                     | Fill gaps in linear algebra and calculus required for CUDA                           |  3Blue1Brown: *Essence of Linear Algebra*<br> Khan Academy Linear Algebra<br> *Deep Learning Math Foundations* PDF (available upon request)                                   |
+|                                          | **Week 4**      | DL Basics + Environment Setup         | Install CUDA & PyTorch; run ResNet on RTX 4060                                       |  Li Mu: *Dive into Deep Learning* (Bilibili)<br> NVIDIA CUDA Installation Guide<br> PyTorch GPU Installation Guide                                                            |
+| **Month 2**<br>CUDA Fundamentals         | **Week 5**      | CUDA Introduction                     | Understand GPU architecture and threading model                                      |  *CUDA C Programming Guide*<br> Udacity: *Intro to Parallel Programming* (free)                                                                                                 |
+|                                          | **Week 6**      | CUDA Memory Model                     | Master global/shared/register/constant memory; focus on memory coalescing            |  Mark Harris’s CUDA Memory Optimization Blog                                                                                                                                      |
+|                                          | **Week 7**      | CUDA Parallel Programming             | Write custom kernels (vector addition, matrix multiplication, reduction, prefix sum) |  CUDA Samples source code                                                                                                                                                         |
+|                                          | **Week 8**      | CUDA Performance Optimization         | Learn warp divergence, occupancy, shared memory optimization, streams + async copy   |  NVIDIA Official Tutorial: *CUDA Streams*                                                                                                                                         |
+| **Month 3**<br>DL Inference Acceleration | **Week 9**      | cuBLAS / cuDNN                        | Understand how deep learning is accelerated on GPU                                   |  cuBLAS & cuDNN official documentation                                                                                                                                            |
+|                                          | **Week 10**     | TensorRT Introduction                 | Optimize and run YOLO/ResNet inference on RTX 4060                                   |  TensorRT Getting Started Guide                                                                                                                                                   |
+|                                          | **Week 11**     | TensorRT Advanced                     | Master FP16/INT8 quantization techniques                                             |  TensorRT Quantization Tool Guide                                                                                                                                                 |
+|                                          | **Week 12**     | Engineering Deployment                | Build inference service with Flask/C++ using TensorRT Engine                         | ️ Python Flask / C++ service framework<br> TensorRT Inference Server Best Practices                                                                                             |
+| **Month 4**<br>FPGA Basics               | **Week 13**     | FPGA Fundamentals                     | Understand programmable logic, LUT/BRAM/DSP; basic Vivado operations                 |  Bilibili: “FPGA from Scratch (KV260)”<br> Xilinx Vivado Tutorials                                                                                                              |
+|                                          | **Week 14**     | Vitis + Vitis AI Introduction         | Set up Vitis AI environment (Rocky Linux); install DPU                               |  Vitis AI Installation Guide<br>️ KV260 Setup Instructions                                                                                                                      |
+|                                          | **Week 15**     | KV260 AI Demo                         | Run official AI demos on board (ResNet50 classification, YOLO inference)             |  Xilinx Official Demo Repository                                                                                                                                                  |
+|                                          | **Week 16**     | Vitis AI Toolchain                    | Master quantizer, compiler, and runtime workflow                                     |  Vitis AI Toolchain User Guide                                                                                                                                                    |
+| **Month 5**<br>FPGA AI Acceleration      | **Week 17**     | Model Quantization & Compilation      | Implement PyTorch → ONNX → DPU compilation; generate xmodel                          | ️ Hands-on with Vitis AI Quantizer & Compiler                                                                                                                                     |
+|                                          | **Week 18**     | Deploy YOLOv5 on KV260                | Deploy YOLOv5 using official examples                                                |  Xilinx YOLOv5 Example Project                                                                                                                                                    |
+|                                          | **Week 19**     | Custom Acceleration Module (Optional) | Design hardware acceleration units (e.g., convolution, activation)                   |  Vitis HLS Tutorials & Examples                                                                                                                                                   |
+|                                          | **Week 20**     | FPGA Engineering Deployment           | Call DPU via Python/C++; implement real-time camera inference                        |  Vitis AI Runtime API Documentation<br> Real-time Deployment Case Studies                                                                                                       |
+| **Month 6**<br>Heterogeneous Project     | **Weeks 21–22** | Co-acceleration Application Design    | Implement GPU preprocessing + FPGA backbone inference + GPU postprocessing pipeline  |  **Suggested Project**: Real-time pedestrian detection system (TensorRT + Vitis AI co-acceleration)<br> **Key Tech**: Multi-threaded data transfer, PCIe/Ethernet communication |
+|                                          | **Weeks 23–24** | Documentation & Publication           | Write full documentation; publish GitHub project; conduct performance comparison     |  Performance comparison report (CPU vs GPU vs FPGA)<br> GitHub project release and presentation                                                                                 |
+
+---
+  
+* Mathematics and C/C++ Basics
+** Must-Know Math
+Just these topics:
++ Linear Algebra: Matrix multiplication, vectors, dot products, the essence of convolution
++ Basic Calculus: The concept of derivatives
+Probability (20%): Enough to understand model loss / Softmax
+
+Recommended Resources:
+3Blue1Brown’s Essence of Linear Algebra (simplest and most intuitive)
+Introduction to Calculus – Khan Academy (only the early sections)
+
+** Must-Know C/C++ Basics
++ Pointers & references
++ Arrays, structs, classes
++ Basic template concepts
++ Basic use of Make/CMake
+
+Recommended Resources:
+First 10 chapters of *C++ Primer (5th Edition)*
+Accelerated C++ (fast-paced introduction)
+Phase Deliverable: Write a simple C++ vector-matrix multiplication program (CPU version).
+
+* Cuda Fundamentals
+** Learning Objectives:
++ Write a kernel
++ Use shared memory
++ Configure blocks/grids
++ Perform basic parallel optimization
+
+** Learning Content:
+CUDA language fundamentals
+Memory hierarchy: global / shared / registers
+Warp / thread / block / grid
+Kernel launch
+Profiling (using Nsight Compute)
+
+Recommended Resources:
+NVIDIA Official CUDA Tutorials (Best):
+https://developer.nvidia.com/cuda-learning-resources
+Udacity CUDA Parallel Computing Course (Free & Classic)
+
+** Project Exercises (Extremely Important)
+Complete these three essential projects:
+*Project 1*: CUDA Vector Addition + Performance Comparison
+CPU version
+GPU version
+Use Nsight to analyze kernel performance bottlenecks
+
+*Project 2*: CUDA Matrix Multiplication (MatMul)
+Naive implementation
+Shared memory optimization
+Tile-based optimization
+Bonus for publishing on GitHub
+
+*Project 3*: CUDA 2D Convolution Implementation
+→ Lays the foundation for future CNN acceleration studies
+
+* GPU Deep Learning Acceleration
+Learning Content:
++ Train a simple model (MNIST/ResNet18) with PyTorch
++ Export to ONNX
++ TensorRT inference acceleration — using the CUDA backend
++ INT8 quantization
++ Benchmarking (measure speed, latency, throughput)
+
+Required Project:
+Project 4: PyTorch → ONNX → TensorRT (on your 4060)
+Model: ResNet18 or YOLOv5n
+Deliverables:
+FP32 inference
+FP16 inference
+INT8 inference
+Measure FPS and latency
+
+This project is portfolio-ready and can be directly showcased in future interviews.
+
+* FPGA Essentials
+Learning FPGA with the KV260 is a gold-standard approach, as it gives you direct access to Xilinx’s AI platform, Vitis AI.
+
+Learning Content:
++ Digital circuit fundamentals
++ Verilog or VHDL (Verilog recommended)
++ Xilinx FPGA development workflow
++ Basic Vivado usage (project creation / simulation / synthesis)
++ KV260 starter platform
+
+Recommended Tutorials:
++ Xilinx Vivado Beginner Tutorials
++ Vitis Basics Tutorials
++ Verilog Tutorials (many established courses on YouTube / Bilibili)
+
+Introductory FPGA Projects:
+Project 5: Complete two foundational projects on the KV260
+LED control + button input
+FFT / FIR filter
+(HLS or Verilog can be used for implementation)
+
+Goal: Understand core FPGA concepts: RTL, timing, synthesis, and clocks.
+
+* FPGA AI Acceleration(DPU/Vitis AI)
+The greatest strength of the KV260 is its built-in DPU (Deep Learning Processing Unit), allowing AI acceleration without writing RTL.
+
+Achieved:
++ Compare GPU inference vs. FPGA inference
++ Explore GPU+FPGA co-acceleration
+
+Learning Content:
++ Vitis AI toolchain installation
++ Principles of the DPU (Deep Learning Processing Unit)
++ Model quantization (INT8)
++ Compiling models for FPGA
++ Running AI inference on the KV260
+
+Official Tutorial (Highly Recommended):
+https://www.xilinx.com/support/documentation-navigation/boards-and-kits/kria/kv260.html
+
+Required Project:
+Project 6: Deploy YOLOv5 / ResNet acceleration on the KV260
+Steps:
+1. Train a model in PyTorch
+2. Export to ONNX
+3. Perform INT8 quantization using the Vitis AI quantizer
+4. Compile into an FPGA bitstream
+5. Run inference on the KV260
+
+Compare speed, power consumption, and latency with the 4060 (TensorRT)
+
+Upon completion, you will have mastered:
+✔ GPU AI acceleration
+✔ FPGA AI acceleration
+✔ Model quantization
+✔ Heterogeneous performance comparison
+
+* GPU + FPGA Project Integration
+Final Goal: Develop an advanced project suitable for your GitHub portfolio and resume, directly relevant for PhD applications or job opportunities.
+
+Project Directions (Choose one):
+Direction 1: GPU + FPGA Co-acceleration for YOLO Detection
+GPU processes the backbone
+FPGA processes the head
+Implement zero-copy data transfer
+Measure FPS and latency
+
+Direction 2: Heterogeneous Acceleration for Visual-Inertial Odometry (VIO)
+GPU accelerates feature extraction
+FPGA accelerates descriptor matching
+
+Direction 3: Industrial Vision Acceleration Pipeline
+GPU: Large model / preprocessing
+FPGA: Post-processing / NMS / fixed pipelines
+
+Direction 4: "GPU vs. FPGA Energy Efficiency Benchmarking Platform"
+Develop a benchmarking platform that:
+Runs the same model on GPU for inference
+Runs the same model on FPGA for inference
+Measures power consumption, speed, and latency
+Produces a detailed, paper-style report
