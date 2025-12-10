@@ -1,0 +1,6 @@
+#+Title: Paralle Compulation Enviroment Setup
+#+Author: Zhengnan Ma
+#+Description: For Cuda and FPGA AI Development Enviroment
+#+Startup: showeverything
+#+Options: toc:2
+
