@@ -4,3 +4,77 @@
 #+Startup: showeverything
 #+Options: toc:2
 
+
+* Rocky Linux Installation
+Selecting =Rocky Linux 9.7=.
+Cuda Toolkits support Rocky Linux 8. 9. 10.
+cuDNN Archieved doesn't support =Rocky Linux 10=.  
+
+Installation
++ [[https://rockylinux.org/zh-CN/download][Downloading Rocky Linux]]
++ Setup user name and password
++ =sudo dnf update=
++ =sudo dnf -y groupinstall "Development Tools"= Install c/c++ and other languege toolchains
++ =sudo def install wget=
+
+All these above prepare for cuda development enviroment installation.
+
+*Reference*
+[[https://www.cnblogs.com/yunmuq/p/15721465.html][Rocky Linux Configuration]]
+[[https://docs.rockylinux.org/guides/package_management/dnf_package_manager/][Rocky Linux Documentation]]
+
+* Cuda Enviroment Installation
+** Cuda and cuDNN setup step
+0. *TODO How to install Nvidia driver on Rocky Linux?* 
+1. Install [[https://www.nvidia.com/en-eu/software/nvidia-app/][Nvidia App]] to check and update Nvidia driver(Only on windows10/11, how to do on Linux?).
+2. Check Nvidia driver version to choose corresponding cuda version [[https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html][here]].
+3. Download [[https://developer.nvidia.com/cuda-toolkit-archive][Cuda Toolkits]] and choose 13.0.1 version(My Linux PC should be the same version with WSL2 in company).
+4. Linux -> x86_64 -> Rocky -> 9 -> runfile(local)
+5. Download [[https://developer.nvidia.com/downloads/compute/cudnn/secure/8.9.7/local_installers/12.x/cudnn-local-repo-rhel9-8.9.7.29-1.0-1.x86_64.rpm/][here]]
+6. I don't know how to install it now!!!   
+
+** NVIDIA Components Configuration
+*** 1. NVIDIA Driver
+Status: Managed by Windows host (WSL2 architecture)
+Driver Version: 581.80 (installed on Windows host)
+CUDA Driver API Version: 13.0
+GPU Model: NVIDIA T400 (2GB VRAM)
+Note: WSL2 uses Windows NVIDIA driver; no Linux driver installation required
+
+*** 2. CUDA Toolkit
+Version: CUDA 13.0.2
+Installation Method: Linux runfile installer (.run)
+Installation Path: /usr/local/cuda-13.0/
+Components Installed:
+CUDA Toolkit: ✓ Installed
+NVIDIA Driver: ✗ Not installed (intentional for WSL2)
+CUDA Samples: ✓ Installed
+Verification:
+bash
+nvcc --version
+# Output: nvcc: NVIDIA (R) Cuda compiler driver
+#         Copyright (c) 2005-2023 NVIDIA Corporation
+#         Built on Wed_Aug_23_14:36:27_PDT_2023
+#         Cuda compilation tools, release 13.0, V13.0.2
+
+*** 3. cuDNN Library
+Version: cuDNN 8.9.7
+Compatibility: Designed for CUDA 13.x (using CUDA 12.x labeled package)
+Installation Method: RPM package for RedHat/CentOS 9.1 x86_64
+Installation Path: /usr/local/cuda-13.0/include/ and /usr/local/cuda-13.0/lib64/
+Verification:
+bash
+cat /usr/local/cuda-13.0/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
+# Output: #define CUDNN_MAJOR 8
+#         #define CUDNN_MINOR 9
+#         #define CUDNN_PATCHLEVEL 7
+
+*** 4. C++ Compiler
+Compiler: GCC (GNU Compiler Collection)
+Version: GCC 11.5.0
+C++ Standard: C++17 fully supported
+Package: gcc-c++-11.5.0-11.el9.x86_64.rpm
+Verification:
+bash
+g++ --version
+# Output: g++ (GCC) 11.5.0 20240712 (Red Hat 11.5.0-1)
