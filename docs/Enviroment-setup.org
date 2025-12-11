@@ -23,51 +23,60 @@ All these above prepare for cuda development enviroment installation.
 [[https://www.cnblogs.com/yunmuq/p/15721465.html][Rocky Linux Configuration]]
 [[https://docs.rockylinux.org/guides/package_management/dnf_package_manager/][Rocky Linux Documentation]]
 
+
 * Cuda Enviroment Installation
 ** Cuda and cuDNN setup step
 0. *TODO How to install Nvidia driver on Rocky Linux?* 
 1. Install [[https://www.nvidia.com/en-eu/software/nvidia-app/][Nvidia App]] to check and update Nvidia driver(Only on windows10/11, how to do on Linux?).
 2. Check Nvidia driver version to choose corresponding cuda version [[https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html][here]].
-3. Download [[https://developer.nvidia.com/cuda-toolkit-archive][Cuda Toolkits]] and choose 13.0.1 version(My Linux PC should be the same version with WSL2 in company).
+3. Download [[https://developer.nvidia.com/cuda-toolkit-archive][Cuda Toolkits]] and choose 12.4.1 version(My Linux PC should be the same version with WSL2 in company).
 4. Linux -> x86_64 -> Rocky -> 9 -> runfile(local)
 5. Download [[https://developer.nvidia.com/downloads/compute/cudnn/secure/8.9.7/local_installers/12.x/cudnn-local-repo-rhel9-8.9.7.29-1.0-1.x86_64.rpm/][here]]
 6. I don't know how to install it now!!!   
+  
+** Stable Balance Combination
+Cuda --> 12.4
+cuDNN --> 8.9.x
+PyTorch --> Last version
+TensorFlow --> 2.13+
 
 ** NVIDIA Components Configuration
 *** 1. NVIDIA Driver
 Status: Managed by Windows host (WSL2 architecture)
 Driver Version: 581.80 (installed on Windows host)
-CUDA Driver API Version: 13.0
+CUDA Driver API Version: 12.4.1
 GPU Model: NVIDIA T400 (2GB VRAM)
 Note: WSL2 uses Windows NVIDIA driver; no Linux driver installation required
 
 *** 2. CUDA Toolkit
-Version: CUDA 13.0.2
+Version: CUDA 12.4.1
 Installation Method: Linux runfile installer (.run)
-Installation Path: /usr/local/cuda-13.0/
+Installation Path: /usr/local/cuda-12.4/
 Components Installed:
 CUDA Toolkit: ✓ Installed
 NVIDIA Driver: ✗ Not installed (intentional for WSL2)
 CUDA Samples: ✓ Installed
 Verification:
-bash
-nvcc --version
-# Output: nvcc: NVIDIA (R) Cuda compiler driver
-#         Copyright (c) 2005-2023 NVIDIA Corporation
-#         Built on Wed_Aug_23_14:36:27_PDT_2023
-#         Cuda compilation tools, release 13.0, V13.0.2
+#+begin_src bash
+    nvcc --version
+    # Output: nvcc: NVIDIA (R) Cuda compiler driver
+    #         Copyright (c) 2005-2023 NVIDIA Corporation
+    #         Built on Wed_Aug_23_14:36:27_PDT_2023
+    #         Cuda compilation tools, release 13.0, V13.0.2
+#+end_src
 
 *** 3. cuDNN Library
 Version: cuDNN 8.9.7
-Compatibility: Designed for CUDA 13.x (using CUDA 12.x labeled package)
+Compatibility: Designed for CUDA 12.4 (using CUDA 12.x labeled package)
 Installation Method: RPM package for RedHat/CentOS 9.1 x86_64
 Installation Path: /usr/local/cuda-13.0/include/ and /usr/local/cuda-13.0/lib64/
 Verification:
-bash
-cat /usr/local/cuda-13.0/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
-# Output: #define CUDNN_MAJOR 8
-#         #define CUDNN_MINOR 9
-#         #define CUDNN_PATCHLEVEL 7
+#+begin_src bash
+    cat /usr/local/cuda-13.0/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
+    # Output: #define CUDNN_MAJOR 8
+    #         #define CUDNN_MINOR 9
+    #         #define CUDNN_PATCHLEVEL 7
+#+end_src
 
 *** 4. C++ Compiler
 Compiler: GCC (GNU Compiler Collection)
@@ -75,6 +84,78 @@ Version: GCC 11.5.0
 C++ Standard: C++17 fully supported
 Package: gcc-c++-11.5.0-11.el9.x86_64.rpm
 Verification:
-bash
-g++ --version
-# Output: g++ (GCC) 11.5.0 20240712 (Red Hat 11.5.0-1)
+#+begin_src bash
+    g++ --version
+    # Output: g++ (GCC) 11.5.0 20240712 (Red Hat 11.5.0-1)
+#+end_src
+
+** PyTorch and TensorFlow Installation
+*** Miniconda
+#+begin_src bash
+    # Download Miniconda installation script
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    # Installation
+    bash Miniconda3-latest-Linux-x86_64.sh
+    # Follow the prompts; it is recommended to select "yes" to initialize conda.
+    source ~/.bashrc
+    # Create new enviroment (Python 3.10 is the most stable)
+    conda create -n deeplearning python=3.10
+    conda activate deeplearning
+#+end_src
+
+*** PyTorch and TensorFlow
+#+begin_src bash
+    # PyTorch
+    conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
+    # TensorFlow
+    pip install tensorflow[and-cuda]==2.15
+#+end_src
+
+
+** Installation Tips
+Checking Nvidia driver version
+=nvidia-smi=
+
+Adding path
+#+begin_src bash
+    # Cuda
+    echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
+    echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+    source ~/.bashrc
+#+end_src
+
+cuDNN Installation
+#+begin_src bash
+    cp /mnt/c/Users/UserName/Downloads/libcudnn8*.rpm ~/ # WSL2 Only
+    sudo dnf install ~/libcudnn8*.rpm
+    # 1. 更新仓库缓存
+    sudo dnf makecache
+
+    # 2. 搜索可用的cuDNN包
+    sudo dnf search libcudnn
+
+    # 3. 安装cuDNN运行时库和开发包
+    sudo dnf install libcudnn8 libcudnn8-devel libcudnn8-samples
+
+    # 4. 验证安装
+    rpm -qa | grep cudnn
+    # 应该看到: libcudnn8-8.9.7.29-1.cuda12.x86_64 等
+    # Verify installation
+    rpm -qa | grep cudnn
+
+    # cuDNN RPM包通常安装到系统目录，需要链接到CUDA目录
+    # 检查安装位置
+    rpm -ql libcudnn8 | head -10
+
+    # 通常安装在:
+    # 头文件: /usr/include/cudnn_version.h
+    # 库文件: /usr/lib64/libcudnn.so.8
+
+    # 创建符号链接到CUDA目录
+    sudo ln -sf /usr/include/cudnn*.h /usr/local/cuda/include/
+    sudo ln -sf /usr/lib64/libcudnn* /usr/local/cuda/lib64/
+
+    # 验证链接
+    ls -la /usr/local/cuda/include/cudnn*
+    ls -la /usr/local/cuda/lib64/libcudnn*
+#+end_src
