@@ -106,9 +106,24 @@ Verification:
 *** PyTorch and TensorFlow
 #+begin_src bash
     # PyTorch
-    conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
+    conda install pytorch torchvision torchaudio 
     # TensorFlow
-    pip install tensorflow[and-cuda]==2.15
+    pip install tensorflow[and-cuda]==2.13
+#+end_src
+Verify Installation
+#+begin_src python
+# PyTorch
+import torch
+torch.version.cuda()
+torch.cuda.is_available()
+torch.cuda.device_count()
+
+# TensorFlow 
+import tensorflow as tf
+tf.config.list_physical_devices('GPU')
+tf.test.gpu_device_name()
+tf.test.main()
+
 #+end_src
 
 
